@@ -1,18 +1,24 @@
-use std::{env, collections::HashMap, io::ErrorKind};
+use std::{env, io::ErrorKind};
 
-use crate::connectors::auth_connection;
+use crate::{connectors::{track_changer_connector, current_track_connector}, configuration};
 
-pub fn identify_and_run_args() -> Result<String, ErrorKind> {
+pub fn identify_and_run_args() -> Result<(), ErrorKind> {
     let args: Vec<String> = env::args().collect();
-    let result = get_entry_points_hash_table()[&args[1]].clone();
-    if let Some(value) = result.clone().unwrap() {
-        return Ok(value)
+    if args.len() == 1 {
+        eprintln!("Faltam argumentos para executar programa");
+        return Err(ErrorKind::InvalidInput)
     }
-    return Err(result.err().unwrap())
+    return execute_command(&args[1]);
 }
 
 
 
-fn get_entry_points_hash_table<T>() -> HashMap<String, Result<T, ErrorKind>> {
-    todo!()
+fn execute_command(command: &str) -> Result<(), ErrorKind> {
+    if configuration::TRACK_CHANGE_COMMANDS.contains(&command) {
+        return track_changer_connector::change_track(command);
+    }
+    if configuration::CURRENT_TRACK_COMMANDS.contains(&command) {
+        return current_track_connector::change_current_track(command);
+    }
+    return Err(ErrorKind::InvalidInput);
 }

@@ -4,6 +4,5 @@ mod handler;
 mod connectors;
 mod configuration;
 fn main() {
-    println!("Hello, world!");
-    println!("{}", args_handler::identify_and_run_args().unwrap());
+   args_handler::identify_and_run_args().unwrap();
 }
