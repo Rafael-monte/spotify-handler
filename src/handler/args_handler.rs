@@ -4,7 +4,7 @@ use crate::{connectors::{track_changer_connector, current_track_connector}, conf
 
 pub fn identify_and_run_args() -> Result<(), ErrorKind> {
     let args: Vec<String> = env::args().collect();
-    if args.len() == 0 {
+    if args.len() == 1 {
         eprintln!("Faltam argumentos para executar programa");
         return Err(ErrorKind::InvalidInput)
     }
