@@ -4,5 +4,8 @@ mod handler;
 mod connectors;
 mod configuration;
 fn main() {
-   args_handler::identify_and_run_args().unwrap();
+   let result = args_handler::identify_and_run_args();
+   if result.is_err() {
+      eprintln!("{}", result.unwrap_err().to_string())
+   }
 }
