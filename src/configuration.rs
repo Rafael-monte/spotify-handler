@@ -6,10 +6,10 @@ pub const TOKEN_URL: &str="https://accounts.spotify.com/api/token";
 pub const PLAYER_HANDLING_URL: &str="https://api.spotify.com/v1/me/player";
 pub const TRACK_CHANGE_COMMANDS: [&str; 2]=["next", "previous"];
 pub const CURRENT_TRACK_COMMANDS: [&str; 3]=["pause", "resume", "repeat"];
+pub const VAULT_COMMANDS: [&str; 3]=["add-new", "reset-all", "reset-secret"];
 
 
-
-fn get_commands_map() -> HashMap<String, String> {
+fn get_track_commands_map() -> HashMap<String, String> {
     let commands = HashMap::from([
         (String::from("next"), String::from("jumps to next track")),
         (String::from("previous"), String::from("return to previous track")),
@@ -20,15 +20,15 @@ fn get_commands_map() -> HashMap<String, String> {
     return commands;
 }
 
-pub fn get_commands(filtered_by: Option<Vec<&str>>) {
+pub fn get_track_commands(filtered_by: Option<Vec<&str>>) {
     if let Some(filter_commands) = filtered_by {
         for command in filter_commands {
-            let command_from_map = get_commands_map()[command].clone();
+            let command_from_map = get_track_commands_map()[command].clone();
             println!("\t{}: {}", command, command_from_map);
         }
         return;
     }
-    for (c, d) in IntoIterator::into_iter(get_commands_map().clone()) {
+    for (c, d) in IntoIterator::into_iter(get_track_commands_map().clone()) {
         println!("\t{}: {}", c, d);
     }
 }

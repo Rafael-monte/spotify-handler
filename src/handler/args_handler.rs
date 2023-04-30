@@ -2,11 +2,17 @@ use std::{env, io::ErrorKind};
 
 use crate::{connectors::{track_changer_connector, current_track_connector}, configuration};
 
+use super::vault_handler;
+
 pub fn identify_and_run_args() -> Result<(), ErrorKind> {
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
         eprintln!("Faltam argumentos para executar programa");
         return Err(ErrorKind::WriteZero)
+    }
+    if args[1] == "vault" {
+        println!("Entered vault");
+        return Ok(vault_handler::handle_vault_arguments());
     }
     return execute_command(&args[1]);
 }
@@ -31,7 +37,7 @@ pub fn handle_error(err: ErrorKind) {
             println!("Invalid command: '{}'\n", arg_passed[1]);
             println!("Usage: spoth [command]");
             println!("Available commands:");
-            configuration::get_commands(None)
+            configuration::get_track_commands(None)
         },
         _ => {}
     }
