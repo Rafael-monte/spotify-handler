@@ -6,7 +6,7 @@ pub fn identify_and_run_args() -> Result<(), ErrorKind> {
     let args: Vec<String> = env::args().collect();
     if args.len() == 1 {
         eprintln!("Faltam argumentos para executar programa");
-        return Err(ErrorKind::InvalidInput)
+        return Err(ErrorKind::WriteZero)
     }
     return execute_command(&args[1]);
 }
@@ -21,4 +21,18 @@ fn execute_command(command: &str) -> Result<(), ErrorKind> {
         return current_track_connector::change_current_track(command);
     }
     return Err(ErrorKind::InvalidInput);
+}
+
+
+pub fn handle_error(err: ErrorKind) {
+    match err {
+        ErrorKind::InvalidInput => {
+            let arg_passed: Vec<String> = env::args().collect();
+            println!("Invalid command: '{}'\n", arg_passed[1]);
+            println!("Usage: spoth [command]");
+            println!("Available commands:");
+            configuration::get_commands(None)
+        },
+        _ => {}
+    }
 }
